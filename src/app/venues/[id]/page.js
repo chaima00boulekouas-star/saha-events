@@ -29,7 +29,8 @@ export default function VenueDetailsPage({ params }) {
   const [venue, setVenue] = useState(null)
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
-  const [date, setDate] = useState("")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
   const [file, setFile] = useState(null)
   const [bookingLoading, setBookingLoading] = useState(false)
   const today = new Date().toISOString().split("T")[0]
@@ -61,8 +62,13 @@ export default function VenueDetailsPage({ params }) {
       return
     }
 
-    if (!date) {
-      setErrorMsg(t.select_date_alert || "Please select a date.")
+    if (!startDate || !endDate) {
+      setErrorMsg(t.select_date_alert || "Please select start and end dates.")
+      return
+    }
+    
+    if (new Date(startDate) > new Date(endDate)) {
+      setErrorMsg("Start date cannot be after end date.")
       return
     }
 
@@ -73,12 +79,17 @@ export default function VenueDetailsPage({ params }) {
 
     setBookingLoading(true)
 
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const diffTime = Math.abs(end - start)
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1
+    const totalPrice = diffDays * (venue.price_per_day || 0)
+
     // Check availability
     const { data: existingBookings, error: checkError } = await supabase
       .from("bookings")
-      .select("id, status")
+      .select("id, status, start_date, end_date")
       .eq("venue_id", id)
-      .eq("date", date)
       .neq("status", "cancelled")
 
     if (checkError) {
@@ -87,7 +98,19 @@ export default function VenueDetailsPage({ params }) {
       return
     }
 
+    let overlap = false
     if (existingBookings && existingBookings.length > 0) {
+      for (const b of existingBookings) {
+        const bStart = new Date(b.start_date)
+        const bEnd = new Date(b.end_date || b.start_date)
+        if (start <= bEnd && end >= bStart) {
+          overlap = true
+          break
+        }
+      }
+    }
+
+    if (overlap) {
       setErrorMsg(t.date_taken)
       setBookingLoading(false)
       return
@@ -109,7 +132,9 @@ export default function VenueDetailsPage({ params }) {
       user_id: user.id,
       venue_id: id,
       status: "pending",
-      date: date,
+      start_date: startDate,
+      end_date: endDate,
+      total_price: totalPrice,
       payment_receipt_url: uploadData.path,
     })
 
@@ -119,7 +144,8 @@ export default function VenueDetailsPage({ params }) {
       setErrorMsg("Booking failed: " + insertError.message)
     } else {
       setSuccessMsg(t.booked_success)
-      setDate("")
+      setStartDate("")
+      setEndDate("")
       setFile(null)
     }
   }
@@ -201,13 +227,31 @@ export default function VenueDetailsPage({ params }) {
               </div>
             ) : (
               <div>
-                <div style={{ marginBottom: 20 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: textMuted, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t.select_date}</label>
-                  <input type="date" className={`input-glass${dark ? " input-glass-dark" : ""}`} min={today} value={date} onChange={e => setDate(e.target.value)} style={{
-                    width: "100%", padding: "12px 16px",
-                    color: text, outline: "none", transition: "border-color 0.2s"
-                  }} />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: textMuted, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t.start_date}</label>
+                    <input type="date" className={`input-glass${dark ? " input-glass-dark" : ""}`} min={today} value={startDate} onChange={e => setStartDate(e.target.value)} style={{
+                      width: "100%", padding: "12px 16px",
+                      color: text, outline: "none", transition: "border-color 0.2s"
+                    }} />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: textMuted, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t.end_date}</label>
+                    <input type="date" className={`input-glass${dark ? " input-glass-dark" : ""}`} min={startDate || today} value={endDate} onChange={e => setEndDate(e.target.value)} style={{
+                      width: "100%", padding: "12px 16px",
+                      color: text, outline: "none", transition: "border-color 0.2s"
+                    }} />
+                  </div>
                 </div>
+
+                {startDate && endDate && new Date(startDate) <= new Date(endDate) && (
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "12px 16px", background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", borderRadius: 12, border: `1px solid ${dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)"}` }}>
+                    <span style={{ fontSize: 13, color: textMuted, fontWeight: 500 }}>{t.total_price} ({Math.ceil(Math.abs(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1} {t.per_day ? "days" : "jours/أيام"})</span>
+                    <span style={{ fontSize: 18, fontWeight: 700, color: accent, fontFamily: headingFont }}>
+                      {((Math.ceil(Math.abs(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1) * (venue.price_per_day || 0)).toLocaleString()} DA
+                    </span>
+                  </div>
+                )}
 
                 <div style={{ marginBottom: 28 }}>
                   <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: textMuted, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t.receipt_label}</label>

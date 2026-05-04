@@ -737,9 +737,13 @@ export default function AdminPage() {
                       </p>
                       <p style={{ fontSize: 13, color: textMuted, marginBottom: 4 }}>📍 {b.venue?.location || b.venue?.brand}</p>
                       <p style={{ fontSize: 13, color: text, marginBottom: 4, fontWeight: 500 }}>👤 {b.userEmail}</p>
-                      {b.date && (
+                      {b.start_date && (
                         <p style={{ fontSize: 12, color: accent, fontWeight: 600, marginTop: 8 }}>
-                          📅 {new Date(b.date).toLocaleDateString(lang === "ar" ? "ar-DZ" : lang === "fr" ? "fr-FR" : "en-US", { day: "numeric", month: "long", year: "numeric" })}
+                          📅 {new Date(b.start_date).toLocaleDateString(lang === "ar" ? "ar-DZ" : lang === "fr" ? "fr-FR" : "en-US", { day: "numeric", month: "long", year: "numeric" })}
+                          {b.end_date && b.end_date !== b.start_date && ` - ${new Date(b.end_date).toLocaleDateString(lang === "ar" ? "ar-DZ" : lang === "fr" ? "fr-FR" : "en-US", { day: "numeric", month: "long", year: "numeric" })}`}
+                          <span style={{ marginLeft: 12, color: textMuted }}>
+                            {t.total_price || "Total"}: {(b.total_price || b.venue?.price_per_day)?.toLocaleString()} DA
+                          </span>
                         </p>
                       )}
                     </div>

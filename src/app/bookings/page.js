@@ -38,7 +38,7 @@ export default function BookingsPage() {
 
     const { data: bookingsData, error } = await supabase
       .from("bookings")
-      .select("id, user_id, venue_id, date, status, payment_receipt_url")
+      .select("id, user_id, venue_id, start_date, end_date, total_price, status, payment_receipt_url")
       .eq("user_id", session.user.id)
       .neq("status", "cancelled")
 
@@ -273,8 +273,12 @@ export default function BookingsPage() {
                   </div>
 
                   <div style={{ display: "flex", gap: 24, color: textMuted, fontSize: 14 }}>
-                    <span>📍 {b.venue?.location || b.venue?.brand || "Location"}</span>
-                    {b.date && <span>📅 {new Date(b.date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</span>}
+                    {b.start_date && (
+                      <span>
+                        📅 {new Date(b.start_date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}
+                        {b.end_date && b.end_date !== b.start_date && ` - ${new Date(b.end_date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}`}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -285,7 +289,7 @@ export default function BookingsPage() {
                   display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8,
                 }}>
                   <p style={{ fontSize: 22, fontWeight: 700, color: text, marginBottom: 4 }}>
-                    {b.venue?.price_per_day?.toLocaleString()}
+                    {(b.total_price || b.venue?.price_per_day)?.toLocaleString()}
                     <span style={{ fontSize: 13, fontWeight: 400, color: textMuted }}> DA</span>
                   </p>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
