@@ -90,7 +90,7 @@ export default function AdminPage() {
   async function loadBookings() {
     const { data: bookingsData } = await supabase
       .from("bookings")
-      .select("id, user_id, venue_id, date, status, payment_receipt_url")
+      .select("id, user_id, venue_id, start_date, end_date, total_price, status, payment_receipt_url")
  
     if (!bookingsData) return
  
@@ -461,9 +461,9 @@ export default function AdminPage() {
                       </p>
                       <p style={{ fontSize: 12, color: textMuted, marginBottom: 2 }}>📍 {b.venue?.brand}</p>
                       <p style={{ fontSize: 11, color: textMuted, marginBottom: 2 }}>👤 {b.userEmail}</p>
-                      {b.date && (
-                        <p style={{ fontSize: 11, color: textMuted }}>
-                          📅 {new Date(b.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                      {b.start_date && (
+                        <p style={{ fontSize: 12, color: accent, fontWeight: 600, marginTop: 8 }}>
+                          📅 {new Date(b.start_date).toLocaleDateString(lang === "ar" ? "ar-DZ" : lang === "fr" ? "fr-FR" : "en-US", { day: "numeric", month: "long", year: "numeric" })}
                         </p>
                       )}
                     </div>

@@ -67,7 +67,7 @@ export default function ProfilePage() {
     setEditGender(activeProfile?.gender || "")
     const { data: bookingsData, error } = await supabase
       .from("bookings")
-      .select("id, user_id, venue_id, date, status, file_url, payment_receipt_url")
+      .select("id, user_id, venue_id, start_date, end_date, total_price, status, file_url, payment_receipt_url")
       .eq("user_id", session.user.id)
     if (error) { console.error(error.message); setLoading(false); return }
     if (!bookingsData?.length) { setBookings([]); setLoading(false); return }
@@ -368,7 +368,7 @@ export default function ProfilePage() {
                         <p style={{ fontSize: 14, fontWeight: 500, color: text, marginBottom: 3 }}>{b.venue?.name}</p>
                         <p style={{ fontSize: 12, color: textMuted }}>📍 {b.venue?.brand}</p>
                       </div>
-                      {b.date && <p style={{ fontSize: 12, color: textMuted, whiteSpace: "nowrap" }}>{new Date(b.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</p>}
+                      {b.start_date && <p style={{ fontSize: 12, color: textMuted, whiteSpace: "nowrap" }}>{new Date(b.start_date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</p>}
                     </div>
                   ))}
                   {bookings.length === 0 && <p style={{ padding: "20px", color: textMuted, fontSize: 13 }}>{t.no_bookings}</p>}
@@ -428,12 +428,17 @@ export default function ProfilePage() {
                       <div>
                         <p style={{ fontSize: 15, fontWeight: 600, color: text, marginBottom: 3 }}>{b.venue?.name}</p>
                         <p style={{ fontSize: 12, color: textMuted }}>📍 {b.venue?.brand}</p>
-                        {b.date && <p style={{ fontSize: 11, color: textMuted, marginTop: 2 }}>📅 {new Date(b.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>}
+                        {b.start_date && (
+                          <p style={{ fontSize: 11, color: textMuted, marginTop: 2 }}>
+                            📅 {new Date(b.start_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                            {b.end_date && b.end_date !== b.start_date && ` - ${new Date(b.end_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                       <span style={{ padding: "4px 12px", borderRadius: 999, fontSize: 11, fontWeight: 600, textTransform: "uppercase", background: color + "18", color }}>{b.status === "pending" ? t.awaiting : statusLabel(b.status)}</span>
-                      <span style={{ fontSize: 14, fontWeight: 700, color: accent }}>{b.venue?.price_per_day?.toLocaleString()} <span style={{ fontSize: 10, fontWeight: 400, color: textMuted }}>DA</span></span>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: accent }}>{(b.total_price || b.venue?.price_per_day)?.toLocaleString()} <span style={{ fontSize: 10, fontWeight: 400, color: textMuted }}>DA</span></span>
                       {b.receiptUrl && <button onClick={() => setReceiptModal({ url: b.receiptUrl, name: b.venue?.name })} style={{ padding: "5px 12px", borderRadius: 999, background: accent + "18", color: accent, fontSize: 11, fontWeight: 600, borderTop: `1px solid ${accent}44`, borderRight: `1px solid ${accent}44`, borderBottom: `1px solid ${accent}44`, borderLeft: `1px solid ${accent}44`, cursor: "pointer" }}>{t.view_receipt}</button>}
                     </div>
                   </div>
@@ -458,7 +463,12 @@ export default function ProfilePage() {
                 <div key={b.id} style={{ padding: "18px 32px", borderBottom: i < arr.length - 1 ? `1px solid ${border}` : "none", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div>
                     <p style={{ fontSize: 15, fontWeight: 600, color: text, marginBottom: 3 }}>{b.venue?.name}</p>
-                    {b.date && <p style={{ fontSize: 12, color: textMuted }}>📅 {new Date(b.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>}
+                    {b.start_date && (
+                      <p style={{ fontSize: 12, color: textMuted }}>
+                        📅 {new Date(b.start_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                        {b.end_date && b.end_date !== b.start_date && ` - ${new Date(b.end_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`}
+                      </p>
+                    )}
                   </div>
                   <button onClick={() => setReceiptModal({ url: b.receiptUrl, name: b.venue?.name })} style={{ padding: "8px 18px", borderRadius: 999, background: accent + "18", color: accent, fontSize: 12, fontWeight: 600, borderTop: `1px solid ${accent}44`, borderRight: `1px solid ${accent}44`, borderBottom: `1px solid ${accent}44`, borderLeft: `1px solid ${accent}44`, cursor: "pointer" }}>📄 {t.view_receipt}</button>
                 </div>

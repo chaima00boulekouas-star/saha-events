@@ -22,7 +22,8 @@ export default function VenueModal({ venue, onClose }) {
   const modalMuted = dark ? textMuted : "rgba(255,255,255,0.7)"
 
   const [user, setUser] = useState(null)
-  const [date, setDate] = useState("")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
   const [file, setFile] = useState(null)
   const [bookingLoading, setBookingLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
@@ -54,18 +55,40 @@ export default function VenueModal({ venue, onClose }) {
   async function handleBook() {
     setErrorMsg(""); setSuccessMsg("")
     if (!user) return
-    if (!date) { setErrorMsg(t.select_date_first); return }
+    if (!startDate || !endDate) { setErrorMsg(t.select_date_first || "Please select start and end dates"); return }
+    if (new Date(startDate) > new Date(endDate)) { setErrorMsg("Start date cannot be after end date"); return }
     if (!file) { setErrorMsg(t.upload_receipt); return }
 
     setBookingLoading(true)
 
+    // Calculate days and total price
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const diffTime = Math.abs(end - start)
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1 // inclusive
+    const totalPrice = diffDays * (venue.price_per_day || 0)
+
     const { data: existingBookings, error: checkError } = await supabase
-      .from("bookings").select("id, status")
-      .eq("venue_id", venue.id).eq("date", date).neq("status", "cancelled")
+      .from("bookings").select("id, status, start_date, end_date")
+      .eq("venue_id", venue.id).neq("status", "cancelled")
 
     if (checkError) { setErrorMsg(checkError.message); setBookingLoading(false); return }
+    
+    // Check for overlap locally
+    let overlap = false
     if (existingBookings && existingBookings.length > 0) {
-      setErrorMsg(t.date_taken)
+      for (const b of existingBookings) {
+        const bStart = new Date(b.start_date)
+        const bEnd = new Date(b.end_date || b.start_date) // Fallback if old record
+        if (start <= bEnd && end >= bStart) {
+          overlap = true
+          break
+        }
+      }
+    }
+
+    if (overlap) {
+      setErrorMsg(t.date_taken || "These dates are already taken")
       setBookingLoading(false); return
     }
 
@@ -77,12 +100,12 @@ export default function VenueModal({ venue, onClose }) {
 
     const { error: insertError } = await supabase.from("bookings").insert({
       user_id: user.id, venue_id: venue.id, status: "pending",
-      date, payment_receipt_url: uploadData.path,
+      start_date: startDate, end_date: endDate, total_price: totalPrice, payment_receipt_url: uploadData.path,
     })
 
     setBookingLoading(false)
     if (insertError) setErrorMsg(insertError.message)
-    else { setSuccessMsg(t.booked_success); setDate(""); setFile(null); setShowSuccessPopup(true) }
+    else { setSuccessMsg(t.booked_success); setStartDate(""); setEndDate(""); setFile(null); setShowSuccessPopup(true) }
   }
 
   function handleDrop(e) {
@@ -305,8 +328,18 @@ export default function VenueModal({ venue, onClose }) {
             <div>
               <div style={{ display: "flex", gap: 12, marginBottom: 14, flexDirection: isRTL ? "row-reverse" : "row" }}>
                 <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: 10, fontWeight: 600, color: modalMuted, marginBottom: 6, display: "block", textTransform: "uppercase", letterSpacing: "0.08em" }}>{t.select_date}</label>
-                  <input type="date" min={today} value={date} onChange={e => { setDate(e.target.value); setErrorMsg("") }} style={{
+                  <label style={{ fontSize: 10, fontWeight: 600, color: modalMuted, marginBottom: 6, display: "block", textTransform: "uppercase", letterSpacing: "0.08em" }}>{t.start_date}</label>
+                  <input type="date" min={today} value={startDate} onChange={e => { setStartDate(e.target.value); setErrorMsg("") }} style={{
+                    width: "100%", padding: "11px 14px", borderRadius: 12,
+                    border: `1.5px solid ${dark ? "rgba(255,255,255,0.1)" : "rgba(210,195,178,0.6)"}`,
+                    background: dark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.5)",
+                    color: modalText, outline: "none", fontSize: 14, fontFamily: "inherit",
+                    boxSizing: "border-box", transition: "border-color 0.2s",
+                  }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ fontSize: 10, fontWeight: 600, color: modalMuted, marginBottom: 6, display: "block", textTransform: "uppercase", letterSpacing: "0.08em" }}>{t.end_date}</label>
+                  <input type="date" min={startDate || today} value={endDate} onChange={e => { setEndDate(e.target.value); setErrorMsg("") }} style={{
                     width: "100%", padding: "11px 14px", borderRadius: 12,
                     border: `1.5px solid ${dark ? "rgba(255,255,255,0.1)" : "rgba(210,195,178,0.6)"}`,
                     background: dark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.5)",
@@ -315,6 +348,15 @@ export default function VenueModal({ venue, onClose }) {
                   }} />
                 </div>
               </div>
+
+              {startDate && endDate && new Date(startDate) <= new Date(endDate) && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, padding: "12px 16px", background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", borderRadius: 12, border: `1px solid ${dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)"}` }}>
+                  <span style={{ fontSize: 13, color: modalMuted, fontWeight: 500 }}>{t.total_price} ({Math.ceil(Math.abs(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1} {t.per_day ? "days" : "jours/أيام"})</span>
+                  <span style={{ fontSize: 18, fontWeight: 700, color: accent, fontFamily: headingFont }}>
+                    {((Math.ceil(Math.abs(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1) * (venue.price_per_day || 0)).toLocaleString()} DA
+                  </span>
+                </div>
+              )}
 
               <div style={{ marginBottom: 18 }}>
                 <label style={{ fontSize: 10, fontWeight: 600, color: modalMuted, marginBottom: 6, display: "block", textTransform: "uppercase", letterSpacing: "0.08em" }}>{t.receipt_label}</label>
