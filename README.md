@@ -139,25 +139,65 @@ Both types of data coexist in this application and are handled by different serv
 
 ```
 saha-events/
-├── app/
-│   ├── page.js                  # Home page
-│   ├── venues/
-│   │   ├── page.js              # Venue carousel & browsing
-│   │   └── [id]/page.js         # Individual venue detail page
-│   ├── bookings/page.js         # Bookings dashboard
-│   ├── profile/page.js          # User profile & settings
-│   ├── login/page.js            # Login page
-│   ├── signup/page.js           # Registration page
-│   └── admin/page.js            # Admin panel (approve/reject bookings)
-├── components/
-│   ├── NavBar.js                # Main navigation bar
-│   ├── VenueModal.js            # Booking modal with date picker & file upload
-│   ├── ThemeContext.js          # Theme system + i18n (EN / FR / AR)
-│   ├── GlobalBackground.js      # Animated global background
-│   └── Icons.js                 # SVG icon components
-├── lib/
-│   └── supabase.js              # Supabase client configuration
-└── README.md
+│
+├── public/                          # Static assets served directly
+│   ├── bokeh-bg.png                 # Animated background image
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── logo-light.png               # Light mode logo
+│   ├── logo.png                     # Main logo
+│   ├── next.svg
+│   ├── stars-bg.png
+│   ├── vercel.svg
+│   └── window.svg
+│
+├── src/
+│   └── app/                         # Next.js App Router
+│       ├── admin/
+│       │   ├── adminpage.js         # Legacy admin reference
+│       │   └── page.js              # Admin panel (dashboard, venues, bookings, users)
+│       ├── bookings/
+│       │   └── page.js              # User bookings dashboard
+│       ├── login/
+│       │   └── page.js              # Login page
+│       ├── profile/
+│       │   ├── inspect.js           # Supabase profile inspector utility
+│       │   └── page.js              # User profile & settings
+│       ├── signup/
+│       │   └── page.js              # Registration page
+│       ├── venues/
+│       │   ├── [id]/
+│       │   │   └── page.js          # Individual venue detail page
+│       │   └── page.js              # Venue carousel & browsing
+│       ├── favicon.ico
+│       ├── globals.css              # Global styles, animations, glassmorphism tokens
+│       ├── layout.js                # Root layout (ThemeProvider + GlobalBackground)
+│       └── page.js                  # Home page
+│
+├── components/                      # Shared React components
+│   ├── GlobalBackground.js          # Animated bokeh background
+│   ├── Icons.js                     # SVG icon components (Eye, EyeOff)
+│   ├── NavBar.js                    # Floating navbar with auth, notifications, language
+│   ├── ThemeContext.js              # Theme system + i18n (EN / FR / AR)
+│   └── VenueModal.js                # Booking modal with date picker & file upload
+│
+├── lib/                             # Utility modules
+│   └── supabase.js                  # Supabase client configuration
+│
+├── .gitignore
+├── AGENTS.md
+├── CLAUDE.md
+├── README.md
+├── eslint.config.mjs
+├── jsconfig.json
+├── next.config.mjs                  # Next.js configuration
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── postcss.config.mjs
+├── tailwind.config.js               # Tailwind CSS configuration
+├── test_columns.mjs                 # Supabase column inspection utility
+└── update_db.mjs                    # Database update utility script
 ```
 
 ---
