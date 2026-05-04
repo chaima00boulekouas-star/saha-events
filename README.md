@@ -43,7 +43,7 @@ profiles (A)  ──< bookings (C) >──  venues (B)
 | | Link |
 |---|---|
 | 🌐 Live Application | `https://saha-events.vercel.app`  |
-| 💻 GitHub Repository | `https://github.com/mbrik/saha_event.git`  |
+| 💻 GitHub Repository | `https://github.com/chaima00boulekouas-star/saha-events.git`  |
 
 ### 🔑 Test Credentials
 
