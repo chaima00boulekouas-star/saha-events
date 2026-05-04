@@ -16,6 +16,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
   const [tab, setTab] = useState("dashboard")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
  
   const [stats, setStats] = useState({ users: 0, venues: 0, bookings: 0, pending: 0, confirmed: 0 })
   const [venues, setVenues] = useState([])
@@ -348,10 +349,10 @@ export default function AdminPage() {
   )
  
   return (
-    <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""}`} style={{ minHeight: "100vh", background: bg, display: "flex" }}>
+    <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""} mobile-col`} style={{ minHeight: "100vh", background: bg, display: "flex" }}>
   
       {/* ── FLOATING CONTROLS ── */}
-      <div style={{
+      <div className="mobile-floating-controls" style={{
         position: "absolute", top: 24, [isRTL ? "left" : "right"]: 24, zIndex: 1000,
         display: "flex", alignItems: "center", gap: 16,
         padding: "8px 12px", borderRadius: 999,
@@ -359,6 +360,15 @@ export default function AdminPage() {
         backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter,
         boxShadow: cardShadow
       }}>
+        {/* Hamburger Menu (Mobile Only) */}
+        <button className="desktop-hide" onClick={() => setMobileMenuOpen(true)} style={{
+          width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+          background: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
+          color: text, border: "none", cursor: "pointer", fontSize: 18
+        }}>
+          ☰
+        </button>
+        <div className="desktop-hide" style={{ width: 1, height: 20, background: border }} />
         {/* Language */}
         <div style={{ display: "flex", gap: 4 }}>
           {["en", "fr", "ar"].map(l => (
@@ -383,7 +393,7 @@ export default function AdminPage() {
         </button>
       </div>
  
-      <div className="mobile-admin-sidebar" style={{
+      <div className={`mobile-admin-sidebar ${!mobileMenuOpen ? "mobile-admin-sidebar-hidden" : "mobile-admin-sidebar-overlay"}`} style={{
         width: 250,
         background: glassCard,
         backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter,
@@ -396,7 +406,16 @@ export default function AdminPage() {
           ? "0 8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset"
           : "0 8px 40px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.9) inset",
       }}>
-        <div style={{ padding: "40px 24px 32px", borderBottom: `1px solid ${border}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
+        <div style={{ padding: "40px 24px 32px", borderBottom: `1px solid ${border}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", position: "relative" }}>
+          {/* Close Button (Mobile Only) */}
+          <button className="desktop-hide" onClick={() => setMobileMenuOpen(false)} style={{
+            position: "absolute", top: 16, right: 16,
+            width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+            background: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)",
+            color: text, border: "none", cursor: "pointer", fontSize: 24, paddingBottom: 4
+          }}>
+            ×
+          </button>
           <img src="/logo.png" alt="Saha Events"
             style={{ height: 42, filter: dark ? "invert(1) brightness(0.9)" : "none", marginBottom: 16, display: "block" }} />
           <div style={{ fontSize: 12, letterSpacing: "0.25em", textTransform: "uppercase", color: accent, fontWeight: 700, width: "100%" }}>
@@ -407,7 +426,7 @@ export default function AdminPage() {
         {/* Nav items */}
         <nav style={{ flex: 1, padding: "24px 16px", overflowY: "auto" }}>
           {sidebarItems.map(item => (
-            <button key={item.key} onClick={() => setTab(item.key)} style={{
+            <button key={item.key} onClick={() => { setTab(item.key); setMobileMenuOpen(false); }} style={{
               width: "100%", display: "flex", alignItems: "center", gap: 12,
               padding: "14px 16px", borderRadius: 16, marginBottom: 8,
               background: tab === item.key ? (dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)") : "transparent",
@@ -487,17 +506,17 @@ export default function AdminPage() {
                   const vs = venueStats[v.id] || { total: 0, pending: 0, confirmed: 0 }
                   const pct = vs.total > 0 ? Math.round((vs.confirmed / vs.total) * 100) : 0
                   return (
-                    <div key={v.id} style={{ 
+                    <div key={v.id} className="mobile-col mobile-align-start" style={{ 
                       padding: "16px 0", 
                       borderBottom: i === venues.length - 1 ? "none" : `1px solid ${dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)"}`,
                       display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
                     }}>
-                      <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ flex: 1, minWidth: 0, width: "100%" }}>
                         <p style={{ fontWeight: 600, color: text, fontSize: 16, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{v.name}</p>
                         <p style={{ fontSize: 12, color: textMuted, marginTop: 2 }}>📍 {v.location}</p>
                       </div>
                       
-                      <div style={{ display: "flex", alignItems: "center", gap: 24, flexShrink: 0 }}>
+                      <div className="mobile-flex-wrap" style={{ display: "flex", alignItems: "center", gap: 24, flexShrink: 0, width: "100%" }}>
                         <div style={{ textAlign: "center", minWidth: 30 }}>
                           <p style={{ fontSize: 20, fontWeight: 700, color: text }}>{vs.total}</p>
                         </div>
@@ -645,7 +664,7 @@ export default function AdminPage() {
                     borderBottom: i < venues.length - 1 ? `1px solid ${border}` : "none",
                   }}>
                     {/* Row */}
-                    <div className="mobile-col mobile-padding" style={{
+                    <div className="mobile-col mobile-padding mobile-align-start" style={{
                       padding: "20px 32px",
                       display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
                     }}>
@@ -658,8 +677,8 @@ export default function AdminPage() {
                           <p style={{ fontSize: 13, color: textMuted }}>📍 {venue.location || venue.brand} · {venue.brand}</p>
                         </div>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-                        <div style={{ fontSize: 13, color: textMuted }}>
+                      <div className="mobile-flex-wrap mobile-w-full" style={{ display: "flex", alignItems: "center", gap: 20 }}>
+                        <div style={{ fontSize: 13, color: textMuted, whiteSpace: "nowrap" }}>
                           <span style={{ color: text, fontWeight: 600 }}>{vs.total}</span> {t.bookings_l}
                           &nbsp;·&nbsp;
                           <span style={{ color: pendingColor, fontWeight: 600 }}>{vs.pending}</span> {t.pending_l}
