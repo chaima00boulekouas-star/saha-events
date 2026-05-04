@@ -806,6 +806,18 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     grid-column: 1 / -1 !important;
   }
   
+  .mobile-filter-container {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  
+  .mobile-filter-btn {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    flex: 1 1 auto !important;
+    text-align: center !important;
+  }
+  
   .mobile-padding-hero {
     padding: 100px 20px 60px !important;
   }

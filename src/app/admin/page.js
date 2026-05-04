@@ -717,9 +717,9 @@ export default function AdminPage() {
             <p style={{ fontSize: 15, color: textMuted, marginBottom: 32 }}>{t.bookings_admin_sub}</p>
  
             {/* Filter tabs */}
-            <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
+            <div className="mobile-filter-container" style={{ display: "flex", gap: 12, marginBottom: 32 }}>
               {["all", "pending", "confirmed", "cancelled"].map(f => (
-                <button key={f} onClick={() => setFilterStatus(f)} style={{
+                <button key={f} className="mobile-filter-btn" onClick={() => setFilterStatus(f)} style={{
                   padding: "10px 24px", borderRadius: 999, fontSize: 13, fontWeight: 600,
                   background: filterStatus === f ? accent : (dark ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.5)"),
                   color: filterStatus === f ? "#fff" : textMuted,
