@@ -66,10 +66,10 @@ export default function VenuesPage() {
   return (
     <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""}`} style={{ minHeight: "100vh", background: bg }}>
       <NavBar />
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px 32px 24px" }}>
+      <div className="mobile-padding" style={{ maxWidth: 1200, margin: "0 auto", padding: "20px 32px 24px" }}>
 
-        <div className="fade-up" style={{ textAlign: "center", marginBottom: 20 }}>
-          <h1 style={{
+        <div className="fade-up mobile-padding" style={{ textAlign: "center", marginBottom: 20 }}>
+          <h1 className="section-title" style={{
             fontFamily: headingFont, fontSize: 36, fontWeight: 500,
             color: text, marginBottom: 8, letterSpacing: lang === "ar" ? "0" : "-0.01em",
           }}>
@@ -81,7 +81,7 @@ export default function VenuesPage() {
         </div>
 
         {/* Search & Filters — single unified bar */}
-        <div className="fade-up fade-up-delay-1" style={{
+        <div className="fade-up fade-up-delay-1 mobile-search-bar mobile-col" style={{
           display: "flex", alignItems: "center", gap: 8, marginBottom: 24,
           background: glassCard,
           backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter,
@@ -103,7 +103,7 @@ export default function VenuesPage() {
               minWidth: 120,
             }}
           />
-          <div style={{ display: "flex", gap: 6, alignItems: "center", flexShrink: 0 }}>
+          <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
             {CATEGORIES.map(cat => (
               <button key={cat.key} onClick={() => setActiveCategory(cat.key)} style={{
                 padding: "7px 16px", borderRadius: 999, cursor: "pointer", fontSize: 12,
@@ -187,7 +187,7 @@ export default function VenuesPage() {
               display: "flex", justifyContent: "center", alignItems: "center",
             }}>
               {/* ── The Stage ── */}
-              <div style={{
+              <div className="mobile-venue-slots" style={{
                 position: "relative", width: 700, height: 400,
               }}>
                 {slots.map(({ venue, origIdx, role }) => {
@@ -198,6 +198,7 @@ export default function VenuesPage() {
                   return (
                     <div
                       key={venue.id + "-" + role}
+                      className={role === "center" ? "mobile-venue-card-center" : "mobile-venue-card-side"}
                       style={{
                         position: "absolute",
                         top: role === "center" ? 0 : 20,
@@ -217,7 +218,7 @@ export default function VenuesPage() {
                           else if (role === "left") prevSlide()
                           else if (role === "right") nextSlide()
                         }}
-                        className={`venue-card-glow ${dark ? "hover-lift-dark" : "hover-lift"}`}
+                        className={`venue-card-glow ${dark ? "hover-lift-dark" : "hover-lift"} ${role === "center" ? "mobile-venue-card-center" : "mobile-venue-card-side"}`}
                         style={{
                           width: "100%",
                           height: "100%",
@@ -310,14 +311,14 @@ export default function VenuesPage() {
               {/* Navigation arrows */}
               {len > 1 && (
                 <>
-                  <button onClick={prevSlide} style={{
+                  <button onClick={prevSlide} className="mobile-hide" style={{
                     position: "absolute", left: "calc(50% - 380px)", top: "50%", transform: "translateY(-50%)", zIndex: 10,
                     width: 44, height: 44, borderRadius: "50%", background: dark ? "rgba(20,18,16,0.5)" : "rgba(255,255,255,0.6)",
                     border: `1px solid ${dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.05)"}`,
                     color: text, fontSize: 24, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
                     backdropFilter: "blur(12px)", transition: "all 0.3s", boxShadow: "0 4px 16px rgba(0,0,0,0.15)"
                   }}>‹</button>
-                  <button onClick={nextSlide} style={{
+                  <button onClick={nextSlide} className="mobile-hide" style={{
                     position: "absolute", left: "calc(50% + 380px)", top: "50%", transform: "translate(-100%, -50%)", zIndex: 10,
                     width: 44, height: 44, borderRadius: "50%", background: dark ? "rgba(20,18,16,0.5)" : "rgba(255,255,255,0.6)",
                     border: `1px solid ${dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.05)"}`,

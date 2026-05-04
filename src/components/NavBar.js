@@ -17,6 +17,7 @@ export default function NavBar() {
   const [scrolled, setScrolled] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [notiOpen, setNotiOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const unreadCount = notifications.filter(n => !n.is_read).length
 
   async function fetchProfile(uid) {
@@ -163,8 +164,20 @@ export default function NavBar() {
         <img src="/logo.png" alt={t.brand_name} style={{ height: 38, width: "auto", display: "block", filter: dark ? "invert(1) brightness(0.9)" : "none", transition: "opacity 0.3s" }} />
       </Link>
 
-      {/* Nav links */}
-      <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+      {/* Mobile Toggle */}
+      <button 
+        className="desktop-hide" 
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        style={{
+          background: "transparent", border: "none", color: text,
+          fontSize: 24, cursor: "pointer", marginLeft: "auto",
+        }}
+      >
+        {mobileMenuOpen ? "✕" : "☰"}
+      </button>
+
+      {/* Nav links (Desktop) */}
+      <div className="mobile-hide" style={{ display: "flex", alignItems: "center", gap: 2 }}>
         {navLinks.map(({ href, label }) => {
           const active = pathname === href
           const isHash = href.includes("#")
@@ -195,8 +208,8 @@ export default function NavBar() {
         })}
       </div>
 
-      {/* Right controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      {/* Right controls (Desktop) */}
+      <div className="mobile-hide" style={{ display: "flex", alignItems: "center", gap: 8 }}>
 
         {/* Language switcher */}
         <div style={{ position: "relative" }} data-lang-switcher>
@@ -405,6 +418,72 @@ export default function NavBar() {
           }}>{t.login}</Link>
         )}
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav-menu" style={{
+          background: dark ? "rgba(20,18,16,0.98)" : "rgba(255,255,255,0.98)",
+          backdropFilter: "blur(24px)",
+          border: `1px solid ${glassBorder}`,
+          zIndex: 300,
+          display: "flex",
+        }}>
+          {navLinks.map(({ href, label }) => {
+            const isHash = href.includes("#")
+            return isHash ? (
+              <a key={href} href={href} onClick={() => setMobileMenuOpen(false)} style={{
+                padding: "16px", color: text, textDecoration: "none",
+                fontSize: 16, borderBottom: `1px solid ${glassBorder}`
+              }}>
+                {label}
+              </a>
+            ) : (
+              <Link key={href} href={href} onClick={() => setMobileMenuOpen(false)} style={{
+                padding: "16px", color: text, textDecoration: "none",
+                fontSize: 16, fontWeight: pathname === href ? 600 : 400,
+                borderBottom: `1px solid ${glassBorder}`
+              }}>
+                {label}
+              </Link>
+            )
+          })}
+          
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "16px", borderBottom: `1px solid ${glassBorder}` }}>
+            <span style={{ color: textMuted }}>Language</span>
+            <div style={{ display: "flex", gap: 8 }}>
+              {langs.map(l => (
+                <button key={l.code} onClick={() => { setLang(l.code); setMobileMenuOpen(false) }} style={{
+                  background: lang === l.code ? accent : "transparent",
+                  color: lang === l.code ? "#fff" : text,
+                  border: `1px solid ${lang === l.code ? accent : glassBorder}`,
+                  padding: "4px 8px", borderRadius: 8, cursor: "pointer"
+                }}>{l.label}</button>
+              ))}
+            </div>
+          </div>
+          
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "16px", borderBottom: `1px solid ${glassBorder}` }}>
+            <span style={{ color: textMuted }}>Theme</span>
+            <button onClick={() => { toggleDark(); setMobileMenuOpen(false) }} style={{ background: "transparent", border: "none", fontSize: 20, cursor: "pointer" }}>
+              {dark ? "☀️ Light" : "🌙 Dark"}
+            </button>
+          </div>
+
+          {!user ? (
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="btn-glow" style={{
+              padding: "14px", borderRadius: 999, textAlign: "center",
+              background: `linear-gradient(135deg, ${accent}, #b8943c)`, color: "#fff",
+              fontSize: 16, fontWeight: 600, textDecoration: "none", marginTop: 12,
+            }}>{t.login}</Link>
+          ) : (
+            <>
+              <Link href="/profile" onClick={() => setMobileMenuOpen(false)} style={{ padding: "16px", color: text, textDecoration: "none", fontSize: 16, borderBottom: `1px solid ${glassBorder}` }}>{t.profile || "Profile"}</Link>
+              <Link href="/profile?tab=settings" onClick={() => setMobileMenuOpen(false)} style={{ padding: "16px", color: text, textDecoration: "none", fontSize: 16, borderBottom: `1px solid ${glassBorder}` }}>{t.settings_tab || "Settings"}</Link>
+              <button onClick={() => { setMobileMenuOpen(false); handleLogout(); }} style={{ padding: "16px", color: "#ef4444", background: "transparent", border: "none", fontSize: 16, textAlign: "left", cursor: "pointer" }}>{t.logout || "Logout"}</button>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   )
 }

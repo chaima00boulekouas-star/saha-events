@@ -170,7 +170,7 @@ export default function VenueDetailsPage({ params }) {
       <div style={{ position: "relative", height: "55vh", overflow: "hidden", marginTop: -12 }}>
         <img src={photo} alt={venue.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         <div className="venue-img-overlay" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 70%)" }} />
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 52px", maxWidth: 1200, margin: "0 auto" }}>
+        <div className="mobile-padding" style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 52px", maxWidth: 1200, margin: "0 auto" }}>
           <div className="fade-up" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
             <span style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", padding: "4px 12px", borderRadius: 999, fontSize: 12, color: "#fff", fontWeight: 600 }}>
               {city}
@@ -183,7 +183,7 @@ export default function VenueDetailsPage({ params }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 52px", display: "flex", gap: 40, alignItems: "flex-start", flexWrap: "wrap" }}>
+      <div className="mobile-padding mobile-col-reverse" style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 52px", display: "flex", gap: 40, alignItems: "flex-start", flexWrap: "wrap" }}>
 
         {/* Main Details */}
         <div className="fade-up fade-up-delay-2" style={{ flex: "1 1 600px" }}>
@@ -206,7 +206,7 @@ export default function VenueDetailsPage({ params }) {
         </div>
 
         {/* Booking Sidebar */}
-        <div className={`fade-up fade-up-delay-3 glass-card${dark ? " glass-card-dark" : ""}`} style={{ flex: "1 1 350px", position: "sticky", top: 100, padding: 32 }}>
+        <div className={`fade-up fade-up-delay-3 glass-card${dark ? " glass-card-dark" : ""} mobile-admin-sidebar`} style={{ flex: "1 1 350px", position: "sticky", top: 100, padding: 32 }}>
             <div style={{ marginBottom: 24 }}>
               <span style={{ fontSize: 32, fontWeight: 700, color: text }}>{venue.price_per_day?.toLocaleString()}</span>
               <span style={{ fontSize: 14, color: textMuted }}> {t.da_day || "DA / day"}</span>
@@ -227,7 +227,7 @@ export default function VenueDetailsPage({ params }) {
               </div>
             ) : (
               <div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+                <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
                   <div>
                     <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: textMuted, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t.start_date}</label>
                     <input type="date" className={`input-glass${dark ? " input-glass-dark" : ""}`} min={today} value={startDate} onChange={e => setStartDate(e.target.value)} style={{

@@ -96,7 +96,7 @@ export default function SignupPage() {
       <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""}`} style={{ minHeight: "100vh", background: bg }}>
         <NavBar />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 80px)", padding: 24 }}>
-          <div className="fade-up" style={{
+          <div className="fade-up mobile-padding" style={{
             background: glassCard,
             backdropFilter: glassFilter,
             WebkitBackdropFilter: glassFilter,
@@ -191,7 +191,7 @@ export default function SignupPage() {
     <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""}`} style={{ minHeight: "100vh", background: bg }}>
       <NavBar />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 80px)", padding: "32px 24px" }}>
-        <div className="fade-up" style={{
+        <div className="fade-up mobile-padding" style={{
           background: glassCard,
           backdropFilter: glassFilter,
           WebkitBackdropFilter: glassFilter,
@@ -210,7 +210,7 @@ export default function SignupPage() {
 
           {errors.submit && <div style={{ padding: "13px 18px", borderRadius: 14, marginBottom: 20, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", fontSize: 13, color: "#ef4444", textAlign: "center" }}>{errors.submit}</div>}
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+          <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
             <div>
               <label style={labelStyle}>{t.first_name}</label>
               <input className={dark ? "input-glass-dark" : "input-glass"} placeholder="John" value={firstName} onChange={e => setFirstName(e.target.value)} style={inputStyle(errors.firstName)} />

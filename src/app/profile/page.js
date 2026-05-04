@@ -201,10 +201,9 @@ export default function ProfilePage() {
   return (
     <div style={{ minHeight: "100vh", background: bg }}>
       <NavBar />
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 32px", display: "flex", gap: 24, alignItems: "flex-start" }}>
-
+      <div className="mobile-col mobile-padding" style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 32px", display: "flex", gap: 24, alignItems: "flex-start" }}>
         {/* ── LEFT SIDEBAR ── */}
-        <div style={{
+        <div className="mobile-admin-sidebar" style={{
           width: 260, flexShrink: 0,
           background: bgCard, borderRadius: 20,
           borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`,
@@ -317,9 +316,9 @@ export default function ProfilePage() {
 
           {/* ── ACCOUNT TAB ── */}
           {activeTab === "account" && (
-            <div style={{ background: bgCard, borderRadius: 20, borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}`, padding: "32px 36px" }}>
+            <div className="mobile-padding" style={{ background: bgCard, borderRadius: 20, borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}`, padding: "32px 36px" }}>
               {/* Welcome */}
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 32 }}>
+              <div className="mobile-col" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 32, gap: 16 }}>
                 <div>
                   <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: text, marginBottom: 6 }}>
                     {t.welcome_back_msg}, <em style={{ color: accent, fontStyle: "normal" }}>{displayName}</em>
@@ -335,7 +334,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Stats row */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
+              <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
                 {[
                   { icon: "📋", value: totalBookings, label: t.total_bookings, color: accent },
                   { icon: "✅", value: confirmedCount, label: t.confirmed, color: confirmedColor },
@@ -355,7 +354,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Upcoming bookings */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+              <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                 {/* Upcoming */}
                 <div style={{ borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}`, borderRadius: 16, overflow: "hidden" }}>
                   <div style={{ padding: "16px 20px", borderBottom: `1px solid ${border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -377,7 +376,7 @@ export default function ProfilePage() {
                 {/* Member info */}
                 <div style={{ borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}`, borderRadius: 16, padding: "20px" }}>
                   <p style={{ fontSize: 15, fontWeight: 600, color: text, marginBottom: 16 }}>{t.account_info}</p>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                  <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                     <div>
                       <p style={{ fontSize: 11, color: textMuted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{t.display_name}</p>
                       <p style={{ fontSize: 13, color: text }}>{displayName}</p>
@@ -407,7 +406,7 @@ export default function ProfilePage() {
           {/* ── BOOKINGS TAB ── */}
           {activeTab === "bookings" && (
             <div style={{ background: bgCard, borderRadius: 20, borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}`, overflow: "hidden" }}>
-              <div style={{ padding: "24px 32px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div className="mobile-col mobile-padding" style={{ padding: "24px 32px", borderBottom: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
                 <div>
                   <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 400, color: text, marginBottom: 4 }}>{t.my_bookings}</h2>
                   <p style={{ fontSize: 13, color: textMuted }}>{t.bookings_sub}</p>
@@ -422,7 +421,7 @@ export default function ProfilePage() {
               ) : bookings.map((b, i) => {
                 const color = statusColor(b.status)
                 return (
-                  <div key={b.id} style={{ padding: "18px 32px", borderBottom: i < bookings.length - 1 ? `1px solid ${border}` : "none", borderLeft: `4px solid ${color}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div key={b.id} className="mobile-col mobile-padding" style={{ padding: "18px 32px", borderBottom: i < bookings.length - 1 ? `1px solid ${border}` : "none", borderLeft: `4px solid ${color}`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                       <div style={{ width: 9, height: 9, borderRadius: "50%", background: color, flexShrink: 0, boxShadow: `0 0 8px ${color}66` }} />
                       <div>
@@ -450,7 +449,7 @@ export default function ProfilePage() {
           {/* ── RECEIPTS TAB ── */}
           {activeTab === "receipts" && (
             <div style={{ background: bgCard, borderRadius: 20, borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}`, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}`, overflow: "hidden" }}>
-              <div style={{ padding: "24px 32px", borderBottom: `1px solid ${border}` }}>
+              <div className="mobile-padding" style={{ padding: "24px 32px", borderBottom: `1px solid ${border}` }}>
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 400, color: text, marginBottom: 4 }}>{t.navitem_receipts}</h2>
                 <p style={{ fontSize: 13, color: textMuted }}>{t.receipts_sub}</p>
               </div>
@@ -460,7 +459,7 @@ export default function ProfilePage() {
                   <p style={{ color: textMuted }}>{t.no_receipts}</p>
                 </div>
               ) : bookings.filter(b => b.receiptUrl).map((b, i, arr) => (
-                <div key={b.id} style={{ padding: "18px 32px", borderBottom: i < arr.length - 1 ? `1px solid ${border}` : "none", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div key={b.id} className="mobile-col mobile-padding" style={{ padding: "18px 32px", borderBottom: i < arr.length - 1 ? `1px solid ${border}` : "none", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
                   <div>
                     <p style={{ fontSize: 15, fontWeight: 600, color: text, marginBottom: 3 }}>{b.venue?.name}</p>
                     {b.start_date && (
@@ -484,7 +483,7 @@ export default function ProfilePage() {
               <p style={{ fontSize: 13, color: textMuted, marginBottom: 28 }}>{t.settings_sub}</p>
 
               {/* Sub-tabs */}
-              <div style={{ display: "flex", gap: 8, marginBottom: 32 }}>
+              <div className="mobile-flex-wrap" style={{ display: "flex", gap: 8, marginBottom: 32 }}>
                 {[
                   { key: "public", label: t.public_info_tab },
                   { key: "security", label: t.security_tab },
@@ -510,7 +509,7 @@ export default function ProfilePage() {
               {settingsTab === "public" && (
                 <div>
                   <h3 style={{ fontSize: 17, fontWeight: 600, color: text, marginBottom: 4 }}>{t.public_info}</h3>
-                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                   <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
                     <div>
                       <label style={{ fontSize: 12, color: textMuted, display: "block", marginBottom: 6, letterSpacing: "0.04em" }}>{t.display_name}</label>
                       <input value={editDisplayName || ""} onChange={e => setEditDisplayName(e.target.value)} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, borderTop: `1.5px solid ${border}`, borderRight: `1.5px solid ${border}`, borderBottom: `1.5px solid ${border}`, borderLeft: `1.5px solid ${border}`, background: bg, color: text, fontSize: 14, boxSizing: "border-box", fontFamily: "inherit", outline: "none" }} />
@@ -595,7 +594,7 @@ export default function ProfilePage() {
                         <button type="button" onClick={() => setShowCurrentPass(s => !s)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: textMuted, transition: "color 0.2s" }} onMouseEnter={e => e.currentTarget.style.color = text} onMouseLeave={e => e.currentTarget.style.color = textMuted}>{showCurrentPass ? <EyeOffIcon /> : <EyeIcon />}</button>
                       </div>
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, maxWidth: 680 }}>
+                    <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, maxWidth: 680 }}>
                       <div>
                         <label style={{ fontSize: 12, color: textMuted, display: "block", marginBottom: 6 }}>{t.new_password}</label>
                         <div style={{ position: "relative" }}>

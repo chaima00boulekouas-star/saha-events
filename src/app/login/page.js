@@ -34,7 +34,7 @@ export default function LoginPage() {
     <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""}`} style={{ minHeight: "100vh", background: bg }}>
       <NavBar />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 80px)", padding: 24 }}>
-        <div className="fade-up" style={{
+        <div className="fade-up mobile-padding" style={{
           background: dark ? "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.01) 50%, transparent 100%)" : "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 30%, transparent 100%)",
           backdropFilter: dark ? "blur(80px) saturate(160%)" : "blur(80px) saturate(250%)", 
           WebkitBackdropFilter: dark ? "blur(80px) saturate(160%)" : "blur(80px) saturate(250%)",

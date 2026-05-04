@@ -76,7 +76,7 @@ export default function Home() {
           opacity: 0.5,
         }} />
 
-        <div style={{
+        <div className="mobile-padding-hero mobile-text-center" style={{
           position: "relative", zIndex: 2,
           padding: "140px 60px 100px",
           maxWidth: 640,
@@ -94,7 +94,7 @@ export default function Home() {
             {t.welcome}
           </p>
           <h1
-            className="fade-up delay-1"
+            className="fade-up delay-1 hero-title"
             style={{
               fontFamily: displayFont,
               fontSize: isRTL ? 64 : 58, 
@@ -115,7 +115,7 @@ export default function Home() {
             {t.hero_after}
           </h1>
           <p
-            className="fade-up delay-2"
+            className="fade-up delay-2 hero-sub"
             style={{ 
               fontSize: isRTL ? 18 : 16, 
               color: dark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.75)", 
@@ -131,7 +131,7 @@ export default function Home() {
           </p>
 
           <div
-            className="fade-up delay-3"
+            className="fade-up delay-3 mobile-flex-center"
             style={{ 
               display: "flex", 
               gap: 14, 
@@ -210,7 +210,7 @@ export default function Home() {
       </section>
 
       {/* ── FEATURES ── */}
-      <section style={{
+      <section className="mobile-padding-section" style={{
         padding: "96px 60px",
         maxWidth: 1100, margin: "0 auto",
         position: "relative", zIndex: 1,
@@ -226,7 +226,7 @@ export default function Home() {
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+        <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
           {features.map((f, i) => (
             <div
               key={i}
@@ -258,21 +258,21 @@ export default function Home() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section id="about" style={{
+      <section id="about" className="mobile-padding-section" style={{
         padding: "0 60px 96px",
         maxWidth: 1100, margin: "0 auto",
         position: "relative", zIndex: 1,
         scrollMarginTop: "15vh",
       }}>
         <div
-          className={`fade-up ${dark ? "card-dark" : "card"}`}
+          className={`fade-up ${dark ? "card-dark" : "card"} ${isRTL ? "mobile-col-reverse" : "mobile-col"}`}
           style={{
             display: "flex",
             flexDirection: isRTL ? "row-reverse" : "row",
             padding: 0, overflow: "hidden",
           }}
         >
-          <div style={{
+          <div className="mobile-padding" style={{
             flex: 1, padding: "56px",
             display: "flex", flexDirection: "column", justifyContent: "center",
             textAlign: isRTL ? "right" : "left",
@@ -309,7 +309,7 @@ export default function Home() {
     </main>
 
       {/* ── FOOTER ── */}
-      <footer style={{
+      <footer className="mobile-footer mobile-padding" style={{
         borderTop: `1px solid ${dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)"}`,
         padding: "28px 60px",
         display: "flex", alignItems: "center", justifyContent: "space-between",

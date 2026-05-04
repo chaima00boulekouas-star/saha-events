@@ -383,8 +383,7 @@ export default function AdminPage() {
         </button>
       </div>
  
-      {/* ── SIDEBAR ── */}
-      <div style={{
+      <div className="mobile-admin-sidebar" style={{
         width: 250,
         background: glassCard,
         backdropFilter: glassFilter, WebkitBackdropFilter: glassFilter,
@@ -445,7 +444,7 @@ export default function AdminPage() {
       </div>
  
       {/* ── MAIN CONTENT ── */}
-      <div style={{ flex: 1, marginLeft: isRTL ? 32 : 266, marginRight: isRTL ? 266 : 32, minHeight: "100vh", padding: "48px 32px", overflowX: "hidden" }}>
+      <div className="mobile-admin-content" style={{ flex: 1, marginLeft: isRTL ? 32 : 266, marginRight: isRTL ? 266 : 32, minHeight: "100vh", padding: "48px 32px", overflowX: "hidden" }}>
  
         {/* ── DASHBOARD ── */}
         {tab === "dashboard" && (
@@ -456,7 +455,7 @@ export default function AdminPage() {
             <p style={{ fontSize: 15, color: textMuted, marginBottom: 40 }}>{t.dashboard_sub}</p>
  
             {/* Stats grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 20, marginBottom: 48 }}>
+            <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 20, marginBottom: 48 }}>
               {[
                 { label: t.total_users, value: stats.users, icon: "👥", color: text },
                 { label: t.active_venues, value: stats.venues, icon: "🏛", color: accent },
@@ -478,7 +477,7 @@ export default function AdminPage() {
               ))}
             </div>
  
-            <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 24, alignItems: "start" }}>
+            <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 24, alignItems: "start" }}>
             
             {/* Bookings per Venue */}
             <div className={twGlassCard} style={{ padding: "24px 28px", borderRadius: 24, border: `1px solid ${glassBorder}`, height: "fit-content", minWidth: 0 }}>
@@ -572,7 +571,7 @@ export default function AdminPage() {
             {/* Add form */}
             <div className={`fade-up ${twGlassCard}`} style={{ padding: "32px", marginBottom: 32 }}>
               <h3 style={{ fontSize: 18, fontWeight: 400, color: text, marginBottom: 24, fontFamily: headingFont }}>{t.add_new_venue_heading}</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, marginBottom: 24 }}>
+              <div className="mobile-grid-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, marginBottom: 24 }}>
                 <div>
                   <label style={{ fontSize: 12, color: textMuted, display: "block", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{t.venue_name_label}</label>
                   <input className={dark ? "input-glass-dark" : "input-glass"} value={newVenue.name || ""} placeholder="e.g. The Grand Ballroom"
@@ -646,9 +645,9 @@ export default function AdminPage() {
                     borderBottom: i < venues.length - 1 ? `1px solid ${border}` : "none",
                   }}>
                     {/* Row */}
-                    <div style={{
+                    <div className="mobile-col mobile-padding" style={{
                       padding: "20px 32px",
-                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16
                     }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                         {venue.image_url && (
@@ -793,7 +792,7 @@ export default function AdminPage() {
             <div className={`fade-up ${twGlassCard}`} style={{ overflow: "hidden" }}>
               {users.length === 0 && <p style={{ padding: 40, color: textMuted, textAlign: "center" }}>No users found.</p>}
               {users.map((u, i) => (
-                <div key={u.id} style={{
+                <div key={u.id} className="mobile-col mobile-padding" style={{
                   padding: "20px 32px", borderBottom: i < users.length - 1 ? `1px solid ${border}` : "none",
                   display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16
                 }}>

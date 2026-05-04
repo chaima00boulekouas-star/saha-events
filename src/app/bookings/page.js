@@ -91,11 +91,11 @@ export default function BookingsPage() {
   return (
     <div className={`ambient-bg${dark ? " ambient-bg-dark" : ""}`} style={{ minHeight: "100vh", background: bg }}>
       <NavBar />
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 32px 48px" }}>
+      <div className="mobile-padding" style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 32px 48px" }}>
 
-        <div className="fade-up" style={{ marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+        <div className="fade-up mobile-col mobile-text-center" style={{ marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <div>
-            <h1 style={{
+            <h1 className="section-title" style={{
               fontFamily: headingFont, fontSize: 40, fontWeight: 500,
               color: text, marginBottom: 10, letterSpacing: lang === "ar" ? "0" : "-0.01em",
             }}>
@@ -120,7 +120,7 @@ export default function BookingsPage() {
         )}
 
         {!loading && sessionLoaded && !user && (
-          <div className="fade-up fade-up-delay-1" style={{
+          <div className="fade-up fade-up-delay-1 mobile-padding" style={{
             textAlign: "center", padding: "64px 40px",
             background: dark ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 30%, transparent 100%)" : "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 30%, transparent 100%)",
             backdropFilter: "blur(80px) saturate(250%)", 
@@ -152,7 +152,7 @@ export default function BookingsPage() {
             }}>
               {t.join_start_sub}
             </p>
-            <div style={{ display: "flex", gap: 14, justifyContent: "center", position: "relative" }}>
+            <div className="mobile-flex-wrap" style={{ display: "flex", gap: 14, justifyContent: "center", position: "relative" }}>
               <button onClick={() => router.push("/login")} className="btn-glow" style={{
                 padding: "14px 32px", borderRadius: 999,
                 background: `linear-gradient(135deg, ${accent}, #b8943c)`,
@@ -176,7 +176,7 @@ export default function BookingsPage() {
         )}
 
         {!loading && user && bookings.length === 0 && (
-          <div className="fade-up fade-up-delay-1" style={{
+          <div className="fade-up fade-up-delay-1 mobile-padding" style={{
             textAlign: "center", padding: "64px 40px",
             background: dark ? "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 30%, transparent 100%)" : "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 30%, transparent 100%)",
             backdropFilter: "blur(80px) saturate(250%)", 
@@ -222,7 +222,7 @@ export default function BookingsPage() {
             const color = statusColor(b.status)
             const photo = b.venue?.image_url || VENUE_PHOTOS[(b.venue_id || 0) % VENUE_PHOTOS.length]
             return (
-              <div key={b.id} className={`fade-up ${"fade-up-delay-" + ((i % 4) + 1)}`} style={{
+              <div key={b.id} className={`fade-up ${"fade-up-delay-" + ((i % 4) + 1)} mobile-booking-card`} style={{
                 background: dark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.6)",
                 backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
                 borderRadius: 22, padding: 22, display: "flex", gap: 24, alignItems: "center",
@@ -246,13 +246,13 @@ export default function BookingsPage() {
                     : "0 8px 32px rgba(0,0,0,0.04), 0 1px 0 rgba(255,255,255,0.8) inset"
                 }}
               >
-                <img src={photo} alt="" style={{
+                <img src={photo} alt="" className="mobile-booking-img" style={{
                   width: 140, height: 110, borderRadius: 16, objectFit: "cover",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
                 }} />
 
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+                  <div className="mobile-flex-wrap" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
                     <h3 style={{
                       fontSize: 20, fontWeight: 600, color: text,
                       fontFamily: headingFont,
@@ -282,7 +282,7 @@ export default function BookingsPage() {
                   </div>
                 </div>
 
-                <div style={{
+                <div className="mobile-booking-right" style={{
                   textAlign: "right",
                   borderLeft: `1px solid ${dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`,
                   paddingLeft: 24,
@@ -292,7 +292,7 @@ export default function BookingsPage() {
                     {(b.total_price || b.venue?.price_per_day)?.toLocaleString()}
                     <span style={{ fontSize: 13, fontWeight: 400, color: textMuted }}> DA</span>
                   </p>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div className="mobile-flex-wrap" style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     {b.receiptUrl && (
                       <button onClick={(e) => { e.stopPropagation(); setReceiptModal({ url: b.receiptUrl, name: b.venue?.name }) }} style={{
                         padding: "8px 20px", borderRadius: 999,
@@ -384,7 +384,7 @@ export default function BookingsPage() {
                 <p style={{ fontSize: 11, color: textMuted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5, fontWeight: 600 }}>{t.payment_receipt_title}</p>
                 <p style={{ fontSize: 17, fontWeight: 600, color: text, fontFamily: headingFont }}>{receiptModal.name}</p>
               </div>
-              <div style={{ display: "flex", gap: 12 }}>
+              <div className="mobile-flex-wrap" style={{ display: "flex", gap: 12 }}>
                 <a href={receiptModal.url} download className="btn-glow" style={{
                   padding: "9px 22px", borderRadius: 999, fontSize: 13, fontWeight: 600,
                   background: `linear-gradient(135deg, ${accent}, #b8943c)`,

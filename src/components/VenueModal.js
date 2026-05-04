@@ -202,7 +202,7 @@ export default function VenueModal({ venue, onClose }) {
       padding: "20px",
     }} onClick={onClose}>
 
-      <div className="modal-content-animate" onClick={e => e.stopPropagation()} style={{
+      <div className="modal-content-animate mobile-modal-col" onClick={e => e.stopPropagation()} style={{
         width: "100%", maxWidth: 960, maxHeight: "88vh",
         display: "flex", flexDirection: isRTL ? "row-reverse" : "row",
         background: dark ? "rgba(18,16,14,0.45)" : "rgba(255,252,248,0.35)",
@@ -216,7 +216,7 @@ export default function VenueModal({ venue, onClose }) {
         position: "relative",
       }}>
 
-        <div style={{
+        <div className="mobile-modal-content mobile-padding" style={{
           flex: "1 1 55%", padding: "24px 30px 28px", display: "flex", flexDirection: "column",
           overflowY: "auto", minHeight: 0, textAlign: isRTL ? "right" : "left",
         }}>
@@ -304,7 +304,7 @@ export default function VenueModal({ venue, onClose }) {
               <div style={{ width: 36, height: 36, borderRadius: "50%", background: `linear-gradient(135deg, ${accent}, #b8943c)`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", fontSize: 15, boxShadow: `0 4px 16px ${accentGlow}`, position: "relative" }}>🔒</div>
               <h4 style={{ fontSize: 16, color: modalText, fontFamily: headingFont, marginBottom: 4, fontWeight: 500, position: "relative" }}>{t.sign_in_to_book}</h4>
               <p style={{ fontSize: 11, color: modalMuted, marginBottom: 14, lineHeight: 1.4, position: "relative" }}>{t.login_to_book}</p>
-              <div style={{ display: "flex", gap: 10, justifyContent: "center", position: "relative" }}>
+              <div className="mobile-col" style={{ display: "flex", gap: 10, justifyContent: "center", position: "relative" }}>
                 <button onClick={() => router.push("/login")} className="btn-glow" style={{
                   padding: "10px 22px", borderRadius: 999, background: `linear-gradient(135deg, ${accent}, #b8943c)`,
                   color: "#fff", fontSize: 13, fontWeight: 600, border: "none", cursor: "pointer",
@@ -398,7 +398,7 @@ export default function VenueModal({ venue, onClose }) {
         </div>
 
         {/* ── RIGHT: Image ── */}
-        <div style={{
+        <div className="mobile-modal-img" style={{
           flex: "0 0 42%", position: "relative", overflow: "hidden",
           display: "flex",
           borderRadius: isRTL ? "24px 0 0 24px" : "0 24px 24px 0",

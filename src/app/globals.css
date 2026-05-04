@@ -690,4 +690,174 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .venue-card-glow::after {
     display: none;
   }
+  
+  .mobile-col {
+    flex-direction: column !important;
+  }
+  
+  .mobile-col-reverse {
+    flex-direction: column-reverse !important;
+  }
+  
+  .mobile-grid-1 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .mobile-padding {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  
+  .mobile-w-full {
+    width: 100% !important;
+  }
+  
+  .mobile-flex-wrap {
+    flex-wrap: wrap !important;
+  }
+  
+  .mobile-search-bar {
+    flex-direction: column !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .mobile-modal-col {
+    flex-direction: column !important;
+  }
+  
+  .mobile-modal-img {
+    flex: 0 0 200px !important;
+    width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    order: 1 !important;
+  }
+  
+  .mobile-modal-content {
+    flex: 1 1 0% !important;
+    width: 100% !important;
+    border-radius: 0 0 24px 24px !important;
+    order: 2 !important;
+  }
+  
+  .mobile-admin-sidebar {
+    position: relative !important;
+    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    margin-bottom: 20px !important;
+  }
+  
+  .mobile-admin-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 20px !important;
+  }
+  
+  .mobile-padding-hero {
+    padding: 100px 20px 60px !important;
+  }
+  
+  .mobile-padding-section {
+    padding: 60px 20px !important;
+  }
+
+  .mobile-text-center {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  .mobile-text-center p, 
+  .mobile-text-center h1, 
+  .mobile-text-center h2,
+  .mobile-text-center div {
+    text-align: center !important;
+  }
+  
+  .mobile-flex-center {
+    justify-content: center !important;
+  }
+  
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .desktop-hide {
+    display: flex !important;
+  }
+  
+  .mobile-nav-menu {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    border-radius: 20px;
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  
+  .hero-title {
+    font-size: 42px !important;
+  }
+  
+  .hero-sub {
+    font-size: 15px !important;
+  }
+  
+  .section-title {
+    font-size: 32px !important;
+  }
+  
+  .mobile-venue-slots {
+    width: 100% !important;
+    height: 380px !important;
+  }
+  
+  .mobile-venue-card-center {
+    width: 90% !important;
+    height: 350px !important;
+  }
+  
+  .mobile-venue-card-side {
+    display: none !important;
+  }
+  
+  .mobile-booking-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+  
+  .mobile-booking-img {
+    width: 100% !important;
+    height: 180px !important;
+  }
+  
+  .mobile-booking-right {
+    text-align: left !important;
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    padding-top: 16px !important;
+    align-items: flex-start !important;
+  }
+
+  .mobile-footer {
+    flex-direction: column !important;
+    gap: 16px !important;
+    text-align: center !important;
+  }
 }
+
+@media (min-width: 769px) {
+  .desktop-hide {
+    display: none !important;
+  }
+}
